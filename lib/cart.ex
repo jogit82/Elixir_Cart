@@ -1,25 +1,19 @@
 defmodule Cart do
 
-  def handle({:item_added, _}) do #only use this function if item_added is passed in as the first argument, can't do this in any other language
+  def handle(cart, {:item_added, item}) do #only use this function if item_added is passed in as the first argument, can't do this in any other language
+    cart = %{contents: [item | Map.get(cart, :contents, [])]}
   end
 
-  def handle({:removed, _}) do #only use this function if item_added is passed in as the first argument, can't do this in any other language
+  def handle(cart, {:item_removed, item}) do
+    cart = %{contents: Map.get(cart, :contents) |> List.delete(item)}
   end
 
-  @moduledoc """
-  Documentation for Cart.
-  """
+  def handle(cart, {:total}) do
+    total = Map.get(cart, :contents) |> Enum.count
+  end
 
-  @doc """
-  Hello world.
+  def handle(cart, {:item_count, item}) do
+    Enum.filter(Map.get(cart, :contents), item)
+  end
 
-  ## Examples
-
-      iex> Cart.hello
-      :world
-
-  """
-  # def hello do
-  #   :world
-  # end
 end
